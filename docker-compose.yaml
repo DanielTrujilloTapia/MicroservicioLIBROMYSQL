@@ -1,0 +1,30 @@
+﻿services:
+  micro-libro:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: micro-libro-mysql
+    ports:
+      - "6001:6000"  # Asumiendo que tu app escucha en 6000 dentro del contenedor
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:6000
+      - ConnectionStrings__DefaultConnection=Server=mysql;Database=UtttMicroLibro;User=root;Password=MySqlPass123;
+    depends_on:
+      - mysql
+    restart: always    
+    
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    ports:
+      - "3307:3306"  # Puerto local 3307 mapea al 3306 del contenedor
+    environment:
+      MYSQL_ROOT_PASSWORD: MySqlPass123
+      MYSQL_DATABASE: UtttMicroLibro
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+
+volumes:
+  mysql_data:

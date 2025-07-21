@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36109.1 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "uttt.Micro.Libro", "uttt.Micro.Libro.csproj", "{CC7222B0-95BD-4D06-8EAD-484CF451EDF5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC7222B0-95BD-4D06-8EAD-484CF451EDF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC7222B0-95BD-4D06-8EAD-484CF451EDF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC7222B0-95BD-4D06-8EAD-484CF451EDF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC7222B0-95BD-4D06-8EAD-484CF451EDF5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {18CBB054-A621-47D7-A9EB-F91223758EC9}
+	EndGlobalSection
+EndGlobal
