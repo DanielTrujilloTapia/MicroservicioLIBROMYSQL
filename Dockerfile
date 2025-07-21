@@ -1,7 +1,7 @@
 # Imagen base con .NET 9 Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
-EXPOSE 6000
+EXPOSE 8080
 
 # Imagen para compilar
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build

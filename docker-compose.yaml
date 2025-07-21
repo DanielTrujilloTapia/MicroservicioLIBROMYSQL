@@ -1,30 +1,142 @@
-﻿services:
-  micro-libro:
+﻿version: '3.8'
+
+services:
+  # 🟦 Microservicio instancia 1
+  micro-libro-1:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: micro-libro-mysql
-    ports:
-      - "6001:6000"  # Asumiendo que tu app escucha en 6000 dentro del contenedor
+    container_name: micro-libro-1
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:6000
-      - ConnectionStrings__DefaultConnection=Server=mysql;Database=UtttMicroLibro;User=root;Password=MySqlPass123;
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=mysql-micro1;Database=globaldb;User=root;Password=micro123;SslMode=none;
     depends_on:
-      - mysql
-    restart: always    
-    
-  mysql:
-    image: mysql:8.0
-    container_name: mysql
+      - mysql-micro1
+    networks:
+      - red_microservicios
     ports:
-      - "3307:3306"  # Puerto local 3307 mapea al 3306 del contenedor
+      - "5001:8080"
+  
+  # 🟦 Microservicio instancia 2
+  micro-libro-2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: micro-libro-2
     environment:
-      MYSQL_ROOT_PASSWORD: MySqlPass123
-      MYSQL_DATABASE: UtttMicroLibro
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=mysql-micro2;Database=globaldb;User=root;Password=micro123;SslMode=none;
+    depends_on:
+      - mysql-micro2
+    networks:
+      - red_microservicios
+    ports:
+      - "5002:8080"
+  
+  # 🟦 Microservicio instancia 3
+  micro-libro-3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: micro-libro-3
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=mysql-micro3;Database=globaldb;User=root;Password=micro123;SslMode=none;
+    depends_on:
+      - mysql-micro3
+    networks:
+      - red_microservicios
+    ports:
+      - "5003:8080"
+  
+  # 🟩 MySQL maestro 1
+  mysql-micro1:
+    image: mysql:5.7
+    container_name: mysql-micro1
+    environment:
+      MYSQL_ROOT_PASSWORD: micro123
+      MYSQL_DATABASE: globaldb
+    ports:
+      - "3307:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
-    restart: always
+      - ./mysql-master1/conf.d:/etc/mysql/conf.d
+      - mysql-micro1-data:/var/lib/mysql
+    networks:
+      - red_microservicios
+  
+  # 🟩 MySQL maestro 2
+  mysql-micro2:
+    image: mysql:5.7
+    container_name: mysql-micro2
+    environment:
+      MYSQL_ROOT_PASSWORD: micro123
+      MYSQL_DATABASE: globaldb
+    ports:
+      - "3308:3306"
+    volumes:
+      - ./mysql-master2/conf.d:/etc/mysql/conf.d
+      - mysql-micro2-data:/var/lib/mysql
+    networks:
+      - red_microservicios
+  
+  # 🟩 MySQL maestro 3
+  mysql-micro3:
+    image: mysql:5.7
+    container_name: mysql-micro3
+    environment:
+      MYSQL_ROOT_PASSWORD: micro123
+      MYSQL_DATABASE: globaldb
+    ports:
+      - "3309:3306"
+    volumes:
+      - ./mysql-master3/conf.d:/etc/mysql/conf.d
+      - mysql-micro3-data:/var/lib/mysql
+    networks:
+      - red_microservicios
+  
+  # 🟨 Global (esclava)
+  mysql-global:
+    image: mysql:5.7
+    container_name: mysql-global
+    environment:
+      MYSQL_ROOT_PASSWORD: global123
+      MYSQL_DATABASE: globaldb
+    ports:
+      - "3310:3306"
+    volumes:
+      - ./mysql-global/conf.d:/etc/mysql/conf.d
+      - mysql-global-data:/var/lib/mysql
+    depends_on:
+      - mysql-micro1
+      - mysql-micro2
+      - mysql-micro3
+    networks:
+      - red_microservicios
+  
+  # 🟧 NGINX Load Balancer
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8080:80"
+    depends_on:
+      - micro-libro-1
+      - micro-libro-2
+      - micro-libro-3
+    networks:
+      - red_microservicios
 
 volumes:
-  mysql_data:
+  mysql-micro1-data:
+  mysql-micro2-data:
+  mysql-micro3-data:
+  mysql-global-data:
+
+networks:
+  red_microservicios:
+    driver: bridge
