@@ -17,12 +17,22 @@ namespace uttt.Micro.Libro.Extensiones
             services.AddControllers()
                 .AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Nuevo>());
 
+            // Contexto principal (DefaultConnection)
             services.AddDbContext<ContextoLibreria>(options =>
             {
                 options.UseMySql(
                    configuration.GetConnectionString("DefaultConnection"),
                    ServerVersion.AutoDetect(configuration.GetConnectionString("DefaultConnection"))
                );
+            });
+
+            // Contexto global (DbGlobalConnection)
+            services.AddDbContext<ContextoLibreriaDbGlobal>(options =>
+            {
+                options.UseMySql(
+                    configuration.GetConnectionString("DbGlobalConnection"),
+                    ServerVersion.AutoDetect(configuration.GetConnectionString("DbGlobalConnection"))
+                );
             });
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Nuevo.Manejador>());

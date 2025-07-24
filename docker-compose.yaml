@@ -11,8 +11,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
       - ConnectionStrings__DefaultConnection=Server=mysql-micro1;Database=globaldb;User=root;Password=micro123;SslMode=none;
+      - ConnectionStrings__DbGlobalConnection=Server=mysql-global;Database=globaldb;User=root;Password=global123;SslMode=none;
     depends_on:
       - mysql-micro1
+      - mysql-global
     networks:
       - red_microservicios
     ports:
@@ -28,8 +30,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
       - ConnectionStrings__DefaultConnection=Server=mysql-micro2;Database=globaldb;User=root;Password=micro123;SslMode=none;
+      - ConnectionStrings__DbGlobalConnection=Server=mysql-global;Database=globaldb;User=root;Password=global123;SslMode=none;
     depends_on:
       - mysql-micro2
+      - mysql-global
     networks:
       - red_microservicios
     ports:
@@ -45,8 +49,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
       - ConnectionStrings__DefaultConnection=Server=mysql-micro3;Database=globaldb;User=root;Password=micro123;SslMode=none;
+      - ConnectionStrings__DbGlobalConnection=Server=mysql-global;Database=globaldb;User=root;Password=global123;SslMode=none;
     depends_on:
       - mysql-micro3
+      - mysql-global
     networks:
       - red_microservicios
     ports:

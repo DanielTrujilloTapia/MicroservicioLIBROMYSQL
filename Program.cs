@@ -2,6 +2,8 @@ using uttt.Micro.Libro.Extensiones;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Asegurar que las variables de entorno tienen prioridad
+builder.Configuration.AddEnvironmentVariables(prefix: "ConnectionStrings__");
 
 builder.Services.AddCors(options =>
 {
