@@ -4,35 +4,25 @@ using uttt.Micro.Libro.Aplicacion;
 using uttt.Micro.Libro.Persistencia;
 using MediatR;
 using AutoMapper;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;  
-
 
 
 namespace uttt.Micro.Libro.Extensiones
 {
     public static class ServiceCollectionExtension
     {
-        public static IServiceCollection AddCustomServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCustomServices(this IServiceCollection services, string writeConnection, string readConnection)
         {
             services.AddControllers()
                 .AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Nuevo>());
 
-            // Contexto principal (DefaultConnection)
             services.AddDbContext<ContextoLibreria>(options =>
             {
-                options.UseMySql(
-                   configuration.GetConnectionString("DefaultConnection"),
-                   ServerVersion.AutoDetect(configuration.GetConnectionString("DefaultConnection"))
-               );
+                options.UseMySql(writeConnection, ServerVersion.AutoDetect(writeConnection));
             });
 
-            // Contexto global (DbGlobalConnection)
             services.AddDbContext<ContextoLibreriaDbGlobal>(options =>
             {
-                options.UseMySql(
-                    configuration.GetConnectionString("DbGlobalConnection"),
-                    ServerVersion.AutoDetect(configuration.GetConnectionString("DbGlobalConnection"))
-                );
+                options.UseMySql(readConnection, ServerVersion.AutoDetect(readConnection));
             });
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Nuevo.Manejador>());

@@ -2,8 +2,13 @@ using uttt.Micro.Libro.Extensiones;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Asegurar que las variables de entorno tienen prioridad
-builder.Configuration.AddEnvironmentVariables(prefix: "ConnectionStrings__");
+// Obtiene las cadenas de conexión desde variables de entorno
+var writeConnection = builder.Configuration["ConnectionStrings:DefaultConnection"];
+var readConnection = builder.Configuration["ConnectionStrings:DbGlobalConnection"];
+
+// Debug: Verifica las cadenas de conexión
+Console.WriteLine($"Write Connection: {writeConnection}");
+Console.WriteLine($"Read Connection: {readConnection}");
 
 builder.Services.AddCors(options =>
 {
@@ -21,7 +26,12 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddCustomServices(builder.Configuration);
+
+// lee las cadenas del appsettings
+//builder.Services.AddCustomServices(builder.Configuration);
+
+// Pasa las cadenas de conexión directamente
+builder.Services.AddCustomServices(writeConnection, readConnection);
 
 
 var app = builder.Build();
