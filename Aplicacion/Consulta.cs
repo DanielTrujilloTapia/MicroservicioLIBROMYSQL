@@ -20,18 +20,18 @@ namespace uttt.Micro.Libro.Aplicacion
 
         public class Manejador : IRequestHandler<Ejecuta, List<LibroMaterialDto>>
         {
-            private readonly ContextoLibreriaDbGlobal _contextoDbGlobal;
+            private readonly ContextoLibreria _contexto;
             private readonly IMapper _mapper;
 
-            public Manejador(ContextoLibreriaDbGlobal contextoDbGlobal, IMapper mapper)
+            public Manejador(ContextoLibreria contexto, IMapper mapper)
             {
-                _contextoDbGlobal = contextoDbGlobal;
                 _mapper = mapper;
+                _contexto = contexto;
             }
 
             public async Task<List<LibroMaterialDto>> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
-                var libros = await _contextoDbGlobal.LibreriasMateriales.ToListAsync();
+                var libros = await _contexto.LibreriasMateriales.ToListAsync();
                 var LibrosDto = _mapper.Map<List<LibreriaMaterial>, List<LibroMaterialDto>>(libros);
                 return LibrosDto;
             }

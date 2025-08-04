@@ -16,12 +16,12 @@ namespace uttt.Micro.Libro.Aplicacion
         public class Manejador : IRequestHandler<LibroUnico, LibroMaterialDto>
         {
             private readonly ContextoLibreria _contexto;
-            private readonly ContextoLibreriaDbGlobal _contextoDbGlobal;
+            
             private readonly IMapper _mapper;
-            public Manejador(ContextoLibreria contexto, ContextoLibreriaDbGlobal contextoDbGlobal, IMapper mapper)
+            public Manejador(ContextoLibreria contexto, IMapper mapper)
             {
                 _contexto = contexto;
-                _contextoDbGlobal = contextoDbGlobal;
+                
                 _mapper = mapper;
                 
             }
@@ -30,11 +30,6 @@ namespace uttt.Micro.Libro.Aplicacion
             {
                 var Libro = await _contexto.LibreriasMateriales.
                 Where(x => x.LibreriaMaterialId == request.LibroId).FirstOrDefaultAsync();
-                if (Libro == null)
-                {
-                    Libro = await _contextoDbGlobal.LibreriasMateriales.
-                        Where(x => x.LibreriaMaterialId == request.LibroId).FirstOrDefaultAsync();
-                }
 
                 if (Libro == null)
                 {

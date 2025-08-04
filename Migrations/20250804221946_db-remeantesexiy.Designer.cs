@@ -12,8 +12,8 @@ using uttt.Micro.Libro.Persistencia;
 namespace uttt.Micro.Libro.Migrations
 {
     [DbContext(typeof(ContextoLibreria))]
-    [Migration("20250721092013_MaestrasDBs")]
-    partial class MaestrasDBs
+    [Migration("20250804221946_db-remeantesexiy")]
+    partial class dbremeantesexiy
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

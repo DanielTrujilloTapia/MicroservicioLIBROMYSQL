@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace uttt.Micro.Libro.Migrations
 {
     /// <inheritdoc />
-    public partial class db_V1 : Migration
+    public partial class dbremeantesexiy : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

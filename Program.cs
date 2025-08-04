@@ -7,8 +7,8 @@ using uttt.Micro.Libro.Extensiones;
 var builder = WebApplication.CreateBuilder(args);
 
 // Obtiene las cadenas de conexión desde variables de entorno
-var writeConnection = builder.Configuration["ConnectionStrings:DefaultConnection"];
-var readConnection = builder.Configuration["ConnectionStrings:DbGlobalConnection"];
+//var writeConnection = builder.Configuration["ConnectionStrings:DefaultConnection"];
+//var readConnection = builder.Configuration["ConnectionStrings:DbGlobalConnection"];
 
 // Leer la configuración JWT desde appsettings.json
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -44,8 +44,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 // Debug: Verifica las cadenas de conexión
-Console.WriteLine($"Write Connection: {writeConnection}");
-Console.WriteLine($"Read Connection: {readConnection}");
+//Console.WriteLine($"Write Connection: {writeConnection}");
+//Console.WriteLine($"Read Connection: {readConnection}");
 
 builder.Services.AddCors(options =>
 {
@@ -93,10 +93,10 @@ builder.Services.AddSwaggerGen(c =>
 
 
 // lee las cadenas del appsettings
-//builder.Services.AddCustomServices(builder.Configuration);
+builder.Services.AddCustomServices(builder.Configuration);
 
 // Pasa las cadenas de conexión directamente
-builder.Services.AddCustomServices(writeConnection, readConnection);
+//builder.Services.AddCustomServices(writeConnection, readConnection);
 
 
 var app = builder.Build();
